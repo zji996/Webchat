@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Chatroom</title>
+    </head>
+    <script type="text/javascript">
+        function login(){
+            var xmlhttp;
+            var str = document.getElementById("msg").innerHTML;
+            if (window.XMLHttpRequest) {
+                xmlhttp=new XMLHttpRequest();
+            }
+            xmlhttp.onreadystatechange=function() {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                    document.getElementById("msg").innerHTML=xmlhttp.responseText;
+                } 
+            }
+            xmlhttp.open("GET","/pushmessage"+str,true);
+            xmlhttp.send();
+        }
+
+function sendmsg(){
+    //console.log(11111111);
+    var xmlhttp;
+    var str = document.getElementById("nname").value;
+    var str1 = document.getElementById("msg").value;
+    var str2 = str + " : " + str1;
+    //console.log(str2);
+    if (window.XMLHttpRequest) {
+        xmlhttp=new XMLHttpRequest();
+    }
+    xmlhttp.onreadystatechange=function() {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+            document.getElementById("msg").innerHTML=xmlhttp.responseText;
+        }   
+    }
+    xmlhttp.open("POST","/pushmessage",true);
+    xmlhttp.send(str2);
+}
+
+function pullmsg(){
+    console.log(2222222222);
+    var xmlhttp;
+    document.getElementById("msg").innerHTML = "";
+    if (window.XMLHttpRequest) {
+        xmlhttp=new XMLHttpRequest();
+    }
+    xmlhttp.onreadystatechange=function() {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+            //console.log(xmlhttp.responseText);
+            //console.log(000000000000);
+            document.getElementById("chathistory").value=xmlhttp.responseText;
+        }   
+    }
+    xmlhttp.open("POST","/pullmessage", true);
+    xmlhttp.send("haha");
+    //Chat History:<input id = "chathistory" type="text" height=1000 size=1000> <button onclick="pullmsg()">Refresh</button><br/>
+    //<img src="/1.jpeg"> </img></br>
+}
+    </script>
+    <body>
+        <div id="message" align="center">
+            <h2>Chat History</h2></br>
+            <textarea id="chathistory" rows="30" cols="200" name="chathistory"></textarea>
+        </div>
+        <div align="center">
+        <button onclick="pullmsg()">Refresh</button><br/>
+        Nick Name:&nbsp;&nbsp;&nbsp;&nbsp;<input id="nname" type="text"/><br/>
+        Chat Messages:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="msg" type="text"/><button onclick="sendmsg()">Send</button><br/>
+        </div>
+    </body>
+</html>
